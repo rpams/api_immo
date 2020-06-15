@@ -1,0 +1,4 @@
+djnagorestframework
+django-cors-headers
+djangorestframework-simplejwt
+hedju
