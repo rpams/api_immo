@@ -1,4 +1,4 @@
-djnagorestframework
+djangorestframework
 django-cors-headers
 djangorestframework-simplejwt
 hedju
