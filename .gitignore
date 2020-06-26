@@ -1,1 +1,6 @@
 api/pagination.py
+node_modules
+static
+api_immo/__pycache__
+api/__pycache__
+api/migrations

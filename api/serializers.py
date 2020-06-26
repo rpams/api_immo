@@ -1,22 +1,61 @@
 from rest_framework import serializers
-from .models import Category, Sujet, User
+from .models import AnnonceurImmobilier, ContracteurImmobilier
+from .models import ServiceImmobilier, ImageAnnonceImmobilier
+from .models import CategoryImmobilier, PriceNature, ContracteurImmobilier
+import os
 
-class CategorySerializer(serializers.ModelSerializer):
+# ------------------------------------------- ImageAnnonce
+class ImageAnnonceSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Category
-		fields = ('id', 'category', 'sous_category')
+		model = ImageAnnonceImmobilier
+		fields = '__all__'
 
-
-class SujetSerializer(serializers.ModelSerializer):
+# ------------------------------------------- PriceNature <-
+class PriceNatureSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Sujet
-		fields = ('id', 'name', 'context', 'ville', 'coordonnees')
+		model = PriceNature
+		fields = ('pk', 'price_nature')
 
-
-class UserSerializer(serializers.ModelSerializer):
-	owner = serializers.HiddenField(
-        default=serializers.CurrentUserDefault()
-    )
+# ------------------------------------------- CategoryImmobilier <-
+class CategoryImmobilierSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = User
-		fields = ('id', 'username', 'email', 'sujet', 'owner', 'date')
+		model = CategoryImmobilier
+		fields = ('pk', 'category')
+
+
+
+# ---------------------------------------------------------------#
+# ------------------------------------------- ServiceImmobilier <-
+class ServiceImmobilierSerializer(serializers.ModelSerializer):
+	# Modifier avec PrimaryKeyRelatedField(read_only=True) ou JSONFielf si souci
+	image = ImageAnnonceSerializer()
+	publisher = serializers.StringRelatedField(read_only=True)
+	cateroy = CategoryImmobilierSerializer()
+	price_nature = PriceNatureSerializer()
+	class Meta:
+		model = ServiceImmobilier
+		fields = '__all__'
+
+# ------------------------------------------- ServiceImmo <-
+class ServiceImmoSerializer(serializers.ModelSerializer):
+	coordinate = serializers.JSONField()
+	class Meta:
+		model = ServiceImmobilier
+		fields = ('title','image','coordinate','price')
+
+
+# ------------------------------------------- AnnonceurImmobilier <-
+class AnnonceurImmobilierSerializer(serializers.ModelSerializer):
+	user = serializers.PrimaryKeyRelatedField(read_only=True)
+	annonce = serializers.StringRelatedField(read_only=True)
+	class Meta:
+		model = AnnonceurImmobilier
+		fields = '__all__'
+
+# ------------------------------------------- ContracteurImmobilier <-
+class ContracteurImmobilierSerializer(serializers.ModelSerializer):
+	user = serializers.PrimaryKeyRelatedField(read_only=True)
+	annonce = serializers.StringRelatedField(read_only=True)
+	class Meta:
+		model = ContracteurImmobilier
+		fields = '__all__'

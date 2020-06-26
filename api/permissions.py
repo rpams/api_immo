@@ -1,10 +1,14 @@
-from rest_framework import permissions
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 
-class IsOwner(permissions.BasePermission):
-	
-    message = "Not an owner."
 
+class IsAnnouncerOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
+        if request.method in SAFE_METHODS:
             return True
-        return request.user == obj.owner
+        return obj.publisher == request.user
+
+class IsContractorOrReadOnly(BasePermission):
+    def has_object_permission(self, request, view,obj):
+        if request.method in SAFE_METHODS:
+            return True
+        return request.user ==  obj.user

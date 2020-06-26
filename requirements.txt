@@ -1,4 +1,9 @@
-djnagorestframework
+djangorestframework
 django-cors-headers
+django-filter
 djangorestframework-simplejwt
-hedju
+django-jsonfield
+django-rest-swagger
+django-phonenumber-field
+phonenumbers
+djoser

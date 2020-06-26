@@ -1,51 +1,68 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from api_immo import settings
-
-class OwnedModel(models.Model):
-    owner = models.ForeignKey(User,
-    on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True
-
-class Belonging(OwnedModel):
-    name = models.CharField(max_length=100)
+from django.utils import timezone
+from jsonfield import JSONField
 
 
-class Category(models.Model):
-    category = models.CharField(max_length=255, help_text="Enter category type")
-    sous_category = models.CharField(max_length=255, help_text="Enter subcategory type")
+
+# ------------------------------------------------------ #
+class CategoryImmobilier(models.Model):
+    category = models.CharField(max_length=255)
+    sous_category = models.CharField(max_length=255)
     def __str__(self):
         return self.category
     def get_absolute_url(self):
-        # Returns the url to access a particular instance of Product.
-        return reverse('category-detail-view', args=[str(self.id)])
+        return reverse('category-immobilier', args=[str(self.category)])
+
+# ------------------------------------------------------ #
+class ImageAnnonceImmobilier(models.Model):
+    image1 = models.ImageField(upload_to='media/immobilier/%Y-%m-%d/', null=True, blank=True)
+    image2 = models.ImageField(upload_to='media/immobilier/%Y-%m-%d/', null=True, blank=True)
+    image3 = models.ImageField(upload_to='media/immobilier/%Y-%m-%d/', null=True, blank=True)
+    image4 = models.ImageField(upload_to='media/immobilier/%Y-%m-%d/', null=True, blank=True)
+    image5 = models.ImageField(upload_to='media/immobilier/%Y-%m-%d/', null=True, blank=True)
 
 
-class Sujet(models.Model):
-    context = models.ForeignKey(Category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, help_text="Name of the context")
-    description = models.TextField()
-    ville = models.CharField(max_length=255, help_text="Town for context")
-    coordonnees = models.CharField(max_length=255, help_text="Coord getting with GMap")
+# ------------------------------------------------------ #
+class PriceNature(models.Model):
+    price_nature = models.CharField(max_length=120)
     def __str__(self):
-        return self.name
+        return self.price_nature
     def get_absolute_url(self):
-        # Returns the url to access a particular instance of Product.
-        return reverse('context-detail-view', args=[str(self.id)])
+        return reverse('price-nature', args=[str(self.price_nature)])
 
-
-class User(models.Model):
-    login_id = models.CharField(max_length=300, help_text="Login id")
-    username = models.CharField(max_length=255, help_text="Username")
-    email = models.EmailField()
-    date = models.DateTimeField(auto_now_add=True)
-    # sujet = models.ManyToManyField(Sujet)
-    sujet = models.ForeignKey(Sujet, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Owns", null=True)
+# ------------------------------------------------------ #
+class ServiceImmobilier(models.Model):
+    publisher = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Ownner", null=True)
+    title = models.CharField(max_length=1024, help_text="Title")
+    image = models.ManyToManyField(ImageAnnonceImmobilier)
+    cateroy = models.ForeignKey(CategoryImmobilier, on_delete=models.CASCADE)
+    description = models.TextField(help_text="Describe it")
+    price = models.IntegerField(help_text="price fcfa")
+    price_nature = models.ForeignKey(PriceNature, on_delete=models.CASCADE, help_text="Price nature")
+    coordinate = models.CharField(max_length=255, help_text="Coord getting with GMap")
+    document = models.FileField(help_text="relatice document url")
+    date_created = models.DateTimeField(default=timezone.now, editable=False)
     def __str__(self):
-        return self.username
+        return self.title
     def get_absolute_url(self):
-        # Returns the url to access a particular instance of Product.
-        return reverse('user-detail-view', args=[str(self.id)])
+        return reverse('service-immobilier', args=[str(self.title)])
+
+
+# ------------------------------------------------------ #
+class AnnonceurImmobilier(models.Model):
+    annonce = models.ForeignKey(ServiceImmobilier, on_delete=models.CASCADE, related_name="ServiceImmoAnnounce")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="UserAnnonceur")
+
+    def __str__(self):
+        return self.user.username + " : " + self.annonce.title
+
+
+# ------------------------------------------------------ #
+class ContracteurImmobilier(models.Model):
+    annonce = models.ForeignKey(ServiceImmobilier, on_delete=models.CASCADE, related_name="serviceImmoContract")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="UserContracteur")
+
+    def __str__(self):
+        return self.user.username + " -> " + self.annonce.title
+
