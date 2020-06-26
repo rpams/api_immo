@@ -2,8 +2,12 @@ djangorestframework
 django-cors-headers
 django-filter
 djangorestframework-simplejwt
+<<<<<<< HEAD
 django-jsonfield
 django-rest-swagger
 django-phonenumber-field
 phonenumbers
 djoser
+=======
+hedju
+>>>>>>> 042804c5252e548e65b039e98a6530fb54d40803

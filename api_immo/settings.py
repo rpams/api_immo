@@ -179,6 +179,7 @@ MEDIA_URL = '/media/'
 
 # APPEND_SLASH = True
 
+<<<<<<< HEAD
 SIMPLE_JWT = {
     'JWT_ALLOW_REFRESH': True,
     'JWT_EXPIRATION_DELTA': timedelta(hours=1),
@@ -186,3 +187,9 @@ SIMPLE_JWT = {
 }
 
 PHONENUMBER_DB_FORMAT = 'NATIONAL'
+=======
+#SIMPLE_JWT = {
+#    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+#    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#}
+>>>>>>> 042804c5252e548e65b039e98a6530fb54d40803
