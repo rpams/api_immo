@@ -1,12 +1,11 @@
+django
 djangorestframework
 django-cors-headers
 django-filter
 djangorestframework-simplejwt
 django-jsonfield
 django-rest-swagger
-django-phonenumber-field
-phonenumbers
+django-rest-auth
 gunicorn
-django-heroku
 psycopg2
-djoser
+django-heroku

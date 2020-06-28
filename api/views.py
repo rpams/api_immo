@@ -1,14 +1,13 @@
 from rest_framework import viewsets, permissions
-from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
-from rest_framework.decorators import action, api_view
 from django.views.decorators.csrf import csrf_exempt
+from django_filters import rest_framework as filters
 from . import serializers
 from . import models
-from django_filters import rest_framework as filters
 from . import permissions
 
 

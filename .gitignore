@@ -1,8 +1,6 @@
-api/pagination.py
-node_modules
-api_immo/__pycache__
-api/__pycache__
 *.log
 *.pot
 *.pyc
+pagination.py
+node_modules/
 __pycache__/

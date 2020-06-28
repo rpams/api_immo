@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils import timezone
 from jsonfield import JSONField
 
@@ -33,7 +33,7 @@ class PriceNature(models.Model):
 
 # ------------------------------------------------------ #
 class ServiceImmobilier(models.Model):
-    publisher = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Ownner", null=True)
+    publisher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="Ownner", null=True)
     title = models.CharField(max_length=1024, help_text="Title")
     image = models.ManyToManyField(ImageAnnonceImmobilier)
     cateroy = models.ForeignKey(CategoryImmobilier, on_delete=models.CASCADE)
@@ -52,7 +52,7 @@ class ServiceImmobilier(models.Model):
 # ------------------------------------------------------ #
 class AnnonceurImmobilier(models.Model):
     annonce = models.ForeignKey(ServiceImmobilier, on_delete=models.CASCADE, related_name="ServiceImmoAnnounce")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="UserAnnonceur")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="UserAnnonceur")
 
     def __str__(self):
         return self.user.username + " : " + self.annonce.title
@@ -61,7 +61,7 @@ class AnnonceurImmobilier(models.Model):
 # ------------------------------------------------------ #
 class ContracteurImmobilier(models.Model):
     annonce = models.ForeignKey(ServiceImmobilier, on_delete=models.CASCADE, related_name="serviceImmoContract")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="UserContracteur")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="UserContracteur")
 
     def __str__(self):
         return self.user.username + " -> " + self.annonce.title

@@ -10,10 +10,7 @@ router.register(r'immobilier/category', CategoryImmobilierView, basename='catego
 router.register(r'immobilier', ServiceImmobilierView, basename='service-immobilier')
 router.register(r'price-nature', PriceNatureView, basename='nature-price')
 
-urlpatterns = [
-	path('', include(router.urls)),
-	# path('immobilier/', ServiceImmobilierView.as_view(), name='service-immobilier'),
-]
+urlpatterns = router.urls
 
 if settings.DEBUG:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
