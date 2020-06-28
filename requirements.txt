@@ -5,7 +5,6 @@ django-filter
 djangorestframework-simplejwt
 django-jsonfield
 django-rest-swagger
-django-rest-auth
 gunicorn
 psycopg2
 django-heroku
